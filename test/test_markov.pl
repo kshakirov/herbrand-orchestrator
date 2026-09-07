@@ -15,7 +15,6 @@ markov_step(String, Next):-
     write(Next).
 
 test_cut_prefix(L, Len1,0,R):- test_cut_prefix(L,Len1,0,R, []);   write("\nfail"), R = [].
-test_cut_prefix([], Len1,Len2,R):- R = [].  
 test_cut_prefix([], Len,Len,R,R).
 test_cut_prefix([], Len1,Len2,R,X):-
     Len1 \== Len2,
