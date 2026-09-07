@@ -14,13 +14,22 @@ markov_step(String, Next):-
     write("NExt "),
     write(Next).
 
-test_cut_prefix(L, Len1,0,R):- test_cut_prefix(L,Len1,0,[], R).
+test_cut_prefix(L, Len1,0,R):- test_cut_prefix(L,Len1,0,R, []);   write("\nfail"), R = [].
+test_cut_prefix([], Len1,Len2,R):- R = [].  
 test_cut_prefix([], Len,Len,R,R).
-test_cut_prefix([], _,_,R,[]).
+test_cut_prefix([], Len1,Len2,R,X):-
+    Len1 \== Len2,
+    write("fdfdfd"),
+    fail.
+   
+
 test_cut_prefix(L, Len, Len,R,R).
-test_cut_prefix([H|T], Len1,Len2, Prefix, R):-
+test_cut_prefix([H|T], Len1,Len2, Acc, Tail):-
+    Len2 < Len1,
     Len3 is Len2 + 1,
-    test_cut_prefix(T, Len1 , Len3, [H | Prefix], R).
+    Acc = [H | DiffTail],
+    test_cut_prefix(T, Len1 , Len3, DiffTail,Tail).
+    
 
     
     
