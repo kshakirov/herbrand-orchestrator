@@ -19,34 +19,36 @@ markov_step(String, Next):-
     write("NExt "),
     write(Next).
 
-test_cut_prefix(L, Len1,0,R):- test_cut_prefix(L,Len1,0,R, []);  format("Fail test_cut_prefix ~n"), R = [].
-test_cut_prefix([], Len,Len,R,R).
-test_cut_prefix([], Len1,Len2,R,X):-
+test_cut_prefix(L, Len1,0,R, Rest):- test_cut_prefix(L,Len1,0,R, [],Rest);  format("Fail test_cut_prefix ~n"), R = [].
+test_cut_prefix([], Len,Len,R,R,[]).
+test_cut_prefix([], Len1,Len2,R,X,Rest):-
     Len1 \== Len2,
 
     fail.
    
 
-test_cut_prefix(L, Len, Len,R,R).
-test_cut_prefix([H|T], Len1,Len2, Acc, Tail):-
+test_cut_prefix(L, Len, Len,R,R, L).
+test_cut_prefix([H|T], Len1,Len2, Acc, Tail, Rest):-
     Len2 < Len1,
     Len3 is Len2 + 1,
     Acc = [H | DiffTail],
-    test_cut_prefix(T, Len1 , Len3, DiffTail,Tail).
+    test_cut_prefix(T, Len1 , Len3, DiffTail,Tail, Rest).
     
 
 
 markov_step_mod(String, Next):-
     (   markov_rule(Template, R),
 	length(Template,N),
-	test_cut_prefix(String,N,0,Fragment),
+	test_cut_prefix(String,N,0,Fragment, Rest),
 	format( "Fragment before rule ~s~n", [Fragment]),
 	markov_rule(Fragment, Replacement),
-	format("Fragment after rule ~s~n", [Replacement]),
+	append(Replacement, Rest, WholeReplacement),
+	format("Now the append "),
+	format("Fragment after rule ~s~n", [WholeReplacement]),
 	format("Finishing"),
 	!,
 	
-    markov_step_mod(Replacement,Next));
+    markov_step_mod(WholeReplacement,Next));
     Next =String,
    format("Next~n "),
    format("~s~n", [Next]).
