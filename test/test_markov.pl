@@ -36,6 +36,14 @@ test_cut_prefix([H|T], Len1,Len2, Acc, Tail, Rest):-
     
 
 
+markov_all( [], ParsedString).
+markov_all([H|T],ParsedString):-
+    (   markov_step([H|T],Next ),
+	markov_all([H|T],Next));
+    markov_all(T, ParsedString).
+    
+    
+
 markov_step_mod(String, Next):-
     (   markov_rule(Template, R),
 	length(Template,N),
