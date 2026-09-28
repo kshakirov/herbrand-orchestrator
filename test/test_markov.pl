@@ -6,7 +6,7 @@
 
 markov_rule("abc", "xyz").
 markov_rule("xxx", "aaa").
-markov_rule("aaa","abc").
+markov_rule("ccc","abc").
 
 markov_step(String, Next):-
     (   markov_rule(String, Replacement),
@@ -36,30 +36,33 @@ test_cut_prefix([H|T], Len1,Len2, Acc, Tail, Rest):-
     
 
 
-markov_all( [], ParsedString).
-markov_all([H|T],ParsedString):-
-    (   markov_step([H|T],Next ),
-	markov_all([H|T],Next));
-    markov_all(T, ParsedString).
+markov_all( [], []).
+markov_all([H|T],[H|ParsedStringFailed]):-
+    (   markov_step_mod([H|T],Next ,Changed),
+	Changed,  markov_all(Next, Next));
+    markov_all(T, ParsedStringFailed).
     
     
 
-markov_step_mod(String, Next):-
+markov_step_mod(String, Next, Changed):-
     (   markov_rule(Template, R),
 	length(Template,N),
 	test_cut_prefix(String,N,0,Fragment, Rest),
 	format( "Fragment before rule ~s~n", [Fragment]),
 	markov_rule(Fragment, Replacement),
 	append(Replacement, Rest, WholeReplacement),
-	format("Now the append "),
+	format("Now the append ~n"),
+	ChangedNew = 1,
 	format("Fragment after rule ~s~n", [WholeReplacement]),
-	format("Finishing"),
+	format("Finishing ~n"),
 	!,
-	
-    markov_step_mod(WholeReplacement,Next));
+	Changed = true,
+	Next = WholeReplacement);   
+
     Next =String,
+    Changed = false,
    format("Next~n "),
    format("~s~n", [Next]).
 
     
-    
+
