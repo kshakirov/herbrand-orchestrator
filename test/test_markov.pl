@@ -37,10 +37,12 @@ test_cut_prefix([H|T], Len1,Len2, Acc, Tail, Rest):-
 
 
 markov_all( [], []).
-markov_all([H|T],[H|ParsedStringFailed]):-
+markov_all([H|T],Result):- 
     (   markov_step_mod([H|T],Next ,Changed),
-	Changed,  markov_all(Next, Next));
-    markov_all(T, ParsedStringFailed).
+	Changed,
+	markov_all(Next, Result));
+    Result = [H|TailResult],
+    markov_all(T, TailResult).
     
     
 
