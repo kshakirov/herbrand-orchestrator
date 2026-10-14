@@ -46,7 +46,8 @@ read_bytes(In, Out, State0, Peer):-
 	format("state is ~s~n", [Event]),
 	(   Event == start
 	->  put_byte(Out, 1),
-	    flush_output(Out)
+	    flush_output(Out),
+	    read_bytes(In, Out, start, Peer)
 	;   read_bytes(In, Out, State1, Peer)
 	)
     ;   true
