@@ -22,7 +22,7 @@ parser_state(payload_length_high,High, payload_length_low(High), needs_more_data
 parser_state(magic, 84,payload_length_high,   needs_more_data).
 parser_state(start, 83, magic, needs_more_data).
 
-fraiming(payload(0, 0, Acc), createTopoloy).
+fraiming(payload(1, 0, [3]), createTopoloy).
 fraiming(payload(Length, Idx, Acc), other).
     
 run_bytes([], State, State).
