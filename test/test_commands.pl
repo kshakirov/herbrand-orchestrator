@@ -1,7 +1,7 @@
 :- ensure_loaded('../lib/parser/commands.pl').
 
 test_magic :-
-    assertion(run_bytes([
+    assertion(consume_bytes([
     0x53, 0x54,
     0x00, 0x0F,
     0x03,
