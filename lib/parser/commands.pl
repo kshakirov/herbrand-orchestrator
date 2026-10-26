@@ -58,6 +58,26 @@ dispatch_command(payload(_Length, _Idx, [3 |Body])) :- handle_create_topology(st
 
 reverse_body(payload(Length, Idx, Acc), (payload(Length,Idx,Body))):-reverse(Acc, Body).
 
+dl_append(L1-T1, T1-T2, L1-T2).
+
+
+count_nodes(Tid, Count):-findall(E, node(E,Tid), L), length(L, Count) .
+count_edges(Tid, Count):-findall(X, edge(X,_,Tid), L), length(L, Count) .
+
+
+agg_payload([], []).
+agg_payload([[From,To]|T], Payload):-
+    agg_payload(T, P0),
+    append([0,From,0,To], P0, Payload). 
+
+pack_edges(Tid, Payload):- findall([From,To], edge(From,To,Tid),B),agg_payload(B, Payload).
+ 
+topology_map(Tid,Map):-
+    count_edges(Tid,Edges),
+    EdgesBytes is 3 + Edges * 4,
+    pack_edges(Tid, PackedEdges),
+    append([0x53,0x54,0, EdgesBytes, 0x6, 0, Tid], PackedEdges, Map).
+
 consume_bytes([], State, State).
 consume_bytes([Byte|Bytes], State0, State) :-
     parser_state(State0, Byte, State1, Event),
