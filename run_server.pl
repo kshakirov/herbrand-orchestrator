@@ -46,8 +46,10 @@ read_bytes(In, Out, State0, Peer):-
 	format("state is ~s~n", [Event]),
 	(   Event == start
 	->  reverse_body(State1, State2),
-	    dispatch_command(State2),
-	    put_byte(Out, 1),
+	    dispatch_command(State2,TopologyId),
+	    topology_map(TopologyId, Map),
+	    maplist(put_byte(Out), Map),
+%%	    put_byte(Out, 1),
 	    flush_output(Out),
 	    read_bytes(In, Out, start, Peer)
 	;   read_bytes(In, Out, State1, Peer)
