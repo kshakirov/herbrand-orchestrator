@@ -45,7 +45,9 @@ read_bytes(In, Out, State0, Peer):-
     ->  parser_state(State0, Byte, State1, Event),
 	format("state is ~s~n", [Event]),
 	(   Event == start
-	->  put_byte(Out, 1),
+	->  reverse_body(State1, State2),
+	    dispatch_command(State2),
+	    put_byte(Out, 1),
 	    flush_output(Out),
 	    read_bytes(In, Out, start, Peer)
 	;   read_bytes(In, Out, State1, Peer)
