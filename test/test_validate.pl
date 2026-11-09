@@ -6,7 +6,8 @@ test_unique_source_sink :-
     unique_source(1,Source),
     assertion(Source == 1),
     unique_sink(1,Sink),
-    assertion(Sink == 3).
+    assertion(Sink == 3),
+    unique_id(5,1).
    
 
     
@@ -20,6 +21,7 @@ main :-
     assertz(edge(2,3,1)),
     test_unique_source_sink,
     writeln('test_one_source_sink: ok'),
-    dfs(1, [],1,3).
+    dfs(1, [],1,3),
+    reachable_from_to(1, 3, 1).
     
 :- initialization(main, program).

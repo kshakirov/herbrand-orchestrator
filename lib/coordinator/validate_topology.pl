@@ -22,4 +22,12 @@ dfs(NodeIdIn, Vertices,TopologyId,NodeIdOut):-
     edge(NodeIdIn, OtherId,TopologyId),
     \+ member(OtherId, Vertices),   
     dfs(OtherId, [OtherId | Vertices], TopologyId, NodeIdOut).
+
+unique_id(NodeID, TopologyId):- \+ node(NodeID,TopologyId).
+
+
+reachable_from_to(SourceId, SinkId, TopologyId):-
+    edge(SourceId, Id, TopologyId),
+    node(Id, TopologyId),
+    dfs(Id, [], TopologyId, SinkId).
     
