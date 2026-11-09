@@ -19,6 +19,7 @@ main :-
     assertz(edge(4,2,1)),
     assertz(edge(2,3,1)),
     test_unique_source_sink,
-    writeln('test_one_source_sink: ok').
-
+    writeln('test_one_source_sink: ok'),
+    dfs(1, [],1,3).
+    
 :- initialization(main, program).

@@ -16,3 +16,10 @@ sink(TopologyId, NodeId):-
 unique_sink(TopologyId, NodeId):-
     findall(N, sink(TopologyId,N), [NodeId]), length([NodeId], L), L ==1.
 	
+
+dfs(NodeIdIn, Vertices,TopologyId,NodeIdOut):-
+    edge(NodeIdIn, NodeIdOut, TopologyId);
+    edge(NodeIdIn, OtherId,TopologyId),
+    \+ member(OtherId, Vertices),   
+    dfs(OtherId, [OtherId | Vertices], TopologyId, NodeIdOut).
+    
