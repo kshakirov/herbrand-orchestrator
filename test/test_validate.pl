@@ -22,6 +22,9 @@ main :-
     test_unique_source_sink,
     writeln('test_one_source_sink: ok'),
     dfs(1, [],1,3),
-    reachable_from_to(1, 3, 1).
+    reachable_from_to(1, 3, 1, 2),
+    reachable_from_to_all(1, 3, 1, [2]).
+    
+
     
 :- initialization(main, program).

@@ -26,8 +26,10 @@ dfs(NodeIdIn, Vertices,TopologyId,NodeIdOut):-
 unique_id(NodeID, TopologyId):- \+ node(NodeID,TopologyId).
 
 
-reachable_from_to(SourceId, SinkId, TopologyId):-
+reachable_from_to(SourceId, SinkId, TopologyId, Id):-
     edge(SourceId, Id, TopologyId),
     node(Id, TopologyId),
     dfs(Id, [], TopologyId, SinkId).
-    
+
+reachable_from_to_all(SourceId, SinkId, TopologyId, Bag):-
+     findall(Id, reachable_from_to(SourceId, SinkId, TopologyId, Id), Bag).
